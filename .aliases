@@ -1,4 +1,5 @@
 # work-specific
+alias pp="just pp"
 alias dev="just dev-start-web"
 alias integration="just dev-start-integration"
 alias types="turbo generate-types"
