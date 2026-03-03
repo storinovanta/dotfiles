@@ -24,13 +24,22 @@ create_symlinks
 
 # --- Install default Claude Code user settings (only if missing) ---
 SRC_CLAUDE_SETTINGS="$HOME/dotfiles/.claude/settings.json"
+SRC_CLAUDE_MD="$HOME/dotfiles/.claude/CLAUDE.md"
 DEST_DIR="$HOME/.claude"
 DEST_CLAUDE_SETTINGS="$DEST_DIR/settings.json"
+DEST_CLAUDE_MD="$DEST_DIR/CLAUDE.md"
 
 if [ -f "$SRC_CLAUDE_SETTINGS" ]; then
   mkdir -p "$DEST_DIR"
   if [ ! -f "$DEST_CLAUDE_SETTINGS" ]; then
     cp "$SRC_CLAUDE_SETTINGS" "$DEST_CLAUDE_SETTINGS"
+  fi
+fi
+
+if [ -f "$SRC_CLAUDE_MD" ]; then
+  mkdir -p "$DEST_DIR"
+  if [ ! -f "$DEST_CLAUDE_MD" ]; then
+    cp "$SRC_CLAUDE_MD" "$DEST_CLAUDE_MD"
   fi
 fi
 
