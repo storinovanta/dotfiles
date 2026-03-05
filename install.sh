@@ -45,8 +45,6 @@ fi
 
 # --- Install Claude Code plugins and MCP servers ---
 if command -v claude >/dev/null 2>&1; then
-  claude plugin install code-simplifier@claude-plugins-official || true
-  
   claude mcp add glean_default https://vanta-be.glean.com/mcp/default \
     --transport http \
     --scope user || true

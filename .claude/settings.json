@@ -15,8 +15,5 @@
         "mcp__glean_default__read_document",
         "mcp__glean_default__chat"
       ]
-    },
-    "enabledPlugins": {
-      "code-simplifier@claude-plugins-official": true
     }
   }
