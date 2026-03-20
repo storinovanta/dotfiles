@@ -1,6 +1,7 @@
 # work-specific
 alias pp="just pp"
 alias dev="just dev-start-web"
+alias init="git pull && pp && dev"
 alias integration="just dev-start-integration"
 alias types="turbo generate-types"
 alias typecheck="turbo typecheck"
@@ -9,4 +10,4 @@ alias typecheck-access="turbo typecheck -F @vanta/access-management"
 alias make-types="just generate-types"
 alias story="just dev-storybook"
 alias test="just unit-test"
-alias init="git pull && pp && dev"
+alias test-am-ws="turbo unit-test -F @vanta/access-management"

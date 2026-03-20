@@ -48,4 +48,7 @@ if command -v claude >/dev/null 2>&1; then
   claude mcp add glean_default https://vanta-be.glean.com/mcp/default \
     --transport http \
     --scope user || true
+
+  claude plugin marketplace add obra/superpowers-marketplace
+  claude plugin install superpowers@superpowers-marketplace
 fi
