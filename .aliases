@@ -1,3 +1,6 @@
+# cheatsheet
+alias cheat="bat --style=plain --language=md ~/.cheatsheet.md 2>/dev/null || cat ~/.cheatsheet.md"
+
 # work-specific
 alias pp="just pp"
 alias dev="just dev-start-web"
