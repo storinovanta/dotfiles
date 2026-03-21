@@ -1,15 +1,10 @@
 {
     "permissions": {
       "allow": [
-        "Bash(git status:*)",
-        "Bash(git diff:*)",
-        "Bash(git log:*)",
-        "Bash(ls /workspaces/obsidian*)",
-        "Bash(cat /workspaces/obsidian*)",
-        "Bash(head /workspaces/obsidian*)",
-        "Bash(tail /workspaces/obsidian*)",
-        "Bash(grep /workspaces/obsidian*)",
-        "Bash(find /workspaces/obsidian*)",
+        "Bash(*)",
+        "Read",
+        "Edit",
+        "Write",
         "mcp__ide__getDiagnostics",
         "mcp__glean_default__search",
         "mcp__glean_default__read_document",

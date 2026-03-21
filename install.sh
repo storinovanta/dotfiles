@@ -4,6 +4,11 @@
 # Needed to default to zsh shell when SSH'ing in
 sudo chsh "$(id -un)" --shell "/usr/bin/zsh"
 
+# --- Install oh-my-zsh (before symlinking .zshrc so our version wins) ---
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
 create_symlinks() {
     # Get the directory in which this script lives.
     script_dir=$(dirname "$(readlink -f "$0")")
@@ -51,4 +56,59 @@ if command -v claude >/dev/null 2>&1; then
 
   claude plugin marketplace add obra/superpowers-marketplace
   claude plugin install superpowers@superpowers-marketplace
+fi
+
+# --- Install oh-my-zsh custom plugins ---
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+install_omz_plugin() {
+    local name=$1 repo=$2
+    local dest="$ZSH_CUSTOM/plugins/$name"
+    if [ ! -d "$dest" ]; then
+        git clone --depth=1 "https://github.com/$repo" "$dest"
+    fi
+}
+
+install_omz_plugin zsh-autosuggestions          zsh-users/zsh-autosuggestions
+install_omz_plugin zsh-syntax-highlighting      zsh-users/zsh-syntax-highlighting
+install_omz_plugin zsh-history-substring-search zsh-users/zsh-history-substring-search
+install_omz_plugin zsh-completions              zsh-users/zsh-completions
+
+# --- Install CLI tools ---
+if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update -qq
+    sudo apt-get install -y -qq ripgrep fd-find fzf bat 2>/dev/null || true
+
+    # Debian/Ubuntu name these differently; create ~/.local/bin shims
+    mkdir -p ~/.local/bin
+    [ ! -e ~/.local/bin/fd  ] && command -v fdfind  >/dev/null 2>&1 && ln -sf "$(command -v fdfind)"  ~/.local/bin/fd
+    [ ! -e ~/.local/bin/bat ] && command -v batcat  >/dev/null 2>&1 && ln -sf "$(command -v batcat)"  ~/.local/bin/bat
+
+    # git-delta (not in standard apt)
+    if ! command -v delta >/dev/null 2>&1; then
+        DELTA_VER="0.18.2"
+        curl -sLo /tmp/delta.deb \
+            "https://github.com/dandavison/delta/releases/download/${DELTA_VER}/git-delta_${DELTA_VER}_amd64.deb"
+        sudo dpkg -i /tmp/delta.deb && rm /tmp/delta.deb
+    fi
+
+    # eza (may not be in older Ubuntu apt)
+    if ! command -v eza >/dev/null 2>&1; then
+        sudo apt-get install -y -qq eza 2>/dev/null || true
+    fi
+fi
+
+# zoxide (smart cd — install script works on any Linux)
+if ! command -v zoxide >/dev/null 2>&1; then
+    curl -sSf https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+
+# --- Configure git to use delta ---
+if command -v delta >/dev/null 2>&1; then
+    git config --global core.pager delta
+    git config --global interactive.diffFilter "delta --color-only"
+    git config --global delta.navigate true
+    git config --global delta.side-by-side true
+    git config --global delta.line-numbers true
+    git config --global merge.conflictstyle diff3
+    git config --global diff.colorMoved default
 fi
