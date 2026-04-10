@@ -116,3 +116,12 @@ if command -v delta >/dev/null 2>&1; then
     git config --global merge.conflictstyle diff3
     git config --global diff.colorMoved default
 fi
+
+# --- Clone access-mgmt-knowledge-base ---
+KB_DIR="$HOME/access-mgmt-knowledge-base"
+if [ -d "$KB_DIR/.git" ]; then
+  git -C "$KB_DIR" pull --ff-only --quiet 2>/dev/null || echo "KB: pull failed, using cached version"
+else
+  git clone https://github.com/VantaInc/access-mgmt-knowledge-base.git "$KB_DIR" \
+    || echo "KB: clone failed — run manually later"
+fi

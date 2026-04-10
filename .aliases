@@ -14,3 +14,19 @@ alias make-types="just generate-types"
 alias story="just dev-storybook"
 alias test="just unit-test"
 alias test-am-ws="turbo unit-test -F @vanta/access-management"
+
+# claude with access-mgmt knowledge base
+claude-apps() {
+  local kb="$HOME/access-mgmt-knowledge-base"
+  if ! command -v claude >/dev/null 2>&1; then
+    echo "claude not found — is Claude Code installed?"
+    return 1
+  fi
+  if [ -d "$kb/.git" ]; then
+    git -C "$kb" pull --ff-only --quiet 2>/dev/null || echo "KB: pull failed, using cached version"
+  else
+    echo "KB not found at $kb — run install.sh first"
+    return 1
+  fi
+  claude --add-dir "$kb" "$@"
+}
