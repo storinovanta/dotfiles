@@ -17,7 +17,7 @@
           "hooks": [
             {
               "type": "command",
-              "command": "bash -c 'echo done > /dev/tcp/localhost/19999' 2>/dev/null || true"
+              "command": "printf '\\a' > /dev/tty 2>/dev/null || true"
             }
           ]
         }
