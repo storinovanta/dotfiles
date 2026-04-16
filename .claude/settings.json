@@ -10,17 +10,5 @@
         "mcp__glean_default__read_document",
         "mcp__glean_default__chat"
       ]
-    },
-    "hooks": {
-      "Stop": [
-        {
-          "hooks": [
-            {
-              "type": "command",
-              "command": "bash -c 'echo done > /dev/tcp/localhost/19999' 2>/dev/null || true"
-            }
-          ]
-        }
-      ]
     }
   }
