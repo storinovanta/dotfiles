@@ -17,7 +17,7 @@
           "hooks": [
             {
               "type": "command",
-              "command": "printf '\\e]777;notify;Claude Code;Task complete\\a' > /dev/tty 2>/dev/null || true"
+              "command": "bash -c 'echo done > /dev/tcp/localhost/19999' 2>/dev/null || true"
             }
           ]
         }
