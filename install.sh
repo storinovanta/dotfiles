@@ -58,7 +58,7 @@ if command -v claude >/dev/null 2>&1; then
   claude plugin install superpowers@superpowers-marketplace
 
   claude plugin marketplace add ndom91/open-plan-annotator
-  claude plugin install open-plan-annotator@ndom91-open-plan-annotator
+  claude plugin install open-plan-annotator@open-plan-annotator
 
 fi
 
