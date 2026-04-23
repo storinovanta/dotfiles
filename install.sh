@@ -60,6 +60,10 @@ if command -v claude >/dev/null 2>&1; then
   claude plugin marketplace add ndom91/open-plan-annotator
   claude plugin install open-plan-annotator@open-plan-annotator
 
+  if command -v rtk >/dev/null 2>&1; then
+    rtk init -g || true
+  fi
+
 fi
 
 # --- Install oh-my-zsh custom plugins ---
@@ -104,6 +108,11 @@ fi
 # zoxide (smart cd — install script works on any Linux)
 if ! command -v zoxide >/dev/null 2>&1; then
     curl -sSf https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+
+# rtk (LLM token reducer — installs to ~/.local/bin)
+if ! command -v rtk >/dev/null 2>&1; then
+    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 fi
 
 # --- Configure git to use delta ---
