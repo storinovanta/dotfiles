@@ -127,10 +127,27 @@ if command -v delta >/dev/null 2>&1; then
 fi
 
 # --- Clone access-mgmt-knowledge-base ---
-KB_DIR="$HOME/access-mgmt-knowledge-base"
-if [ -d "$KB_DIR/.git" ]; then
-  git -C "$KB_DIR" pull --ff-only --quiet 2>/dev/null || echo "KB: pull failed, using cached version"
+# On Ona instances with EFS, clone to /prebuilt-home (instance-local) and symlink
+# from $HOME so each instance gets its own copy rather than sharing via EFS.
+if [ -d "/prebuilt-home" ]; then
+  KB_DIR="/prebuilt-home/access-mgmt-knowledge-base"
+  KB_LINK="$HOME/access-mgmt-knowledge-base"
+  if [ -d "$KB_DIR/.git" ]; then
+    git -C "$KB_DIR" pull --ff-only --quiet 2>/dev/null || echo "KB: pull failed, using cached version"
+  else
+    git clone https://github.com/VantaInc/access-mgmt-knowledge-base.git "$KB_DIR" \
+      || echo "KB: clone failed — run manually later"
+  fi
+  if [ ! -L "$KB_LINK" ] || [ "$(readlink "$KB_LINK")" != "$KB_DIR" ]; then
+    rm -rf "$KB_LINK"
+    ln -s "$KB_DIR" "$KB_LINK"
+  fi
 else
-  git clone https://github.com/VantaInc/access-mgmt-knowledge-base.git "$KB_DIR" \
-    || echo "KB: clone failed — run manually later"
+  KB_DIR="$HOME/access-mgmt-knowledge-base"
+  if [ -d "$KB_DIR/.git" ]; then
+    git -C "$KB_DIR" pull --ff-only --quiet 2>/dev/null || echo "KB: pull failed, using cached version"
+  else
+    git clone https://github.com/VantaInc/access-mgmt-knowledge-base.git "$KB_DIR" \
+      || echo "KB: clone failed — run manually later"
+  fi
 fi
